@@ -113,10 +113,10 @@ function duplicate_post_make_duplicate_link_row($actions, $post) {
 	if (duplicate_post_is_current_user_allowed_to_copy()) {
 		$actions['clone'] = '<a href="'.duplicate_post_get_clone_post_link( $post->ID , 'display', false).'" title="'
 		. esc_attr(__("Clone this item", DUPLICATE_POST_I18N_DOMAIN))
-		. '">' .  __('Clone', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+		. '">' .  esc_attr__('Clone', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
 		$actions['edit_as_new_draft'] = '<a href="'. duplicate_post_get_clone_post_link( $post->ID ) .'" title="'
 		. esc_attr(__('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN))
-		. '">' .  __('New Draft', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+		. '">' .  esc_attr__('New Draft', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
 	}
 	return $actions;
 }
@@ -133,7 +133,7 @@ function duplicate_post_add_duplicate_post_button() {
 		?>
 <div id="duplicate-action">
 	<a class="submitduplicate duplication"
-		href="<?php echo duplicate_post_get_clone_post_link( $_GET['post'] ) ?>"><?php _e('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN); ?>
+		href="<?php echo duplicate_post_get_clone_post_link( absint( $_GET['post'] ) )  ?>"><?php esc_attr_e('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN); ?>
 	</a>
 </div>
 		<?php
@@ -164,7 +164,7 @@ function duplicate_post_save_as_new_post($status = ''){
 	}
 
 	// Get the original post
-	$id = (isset($_GET['post']) ? $_GET['post'] : $_POST['post']);
+	$id = (isset($_GET['post']) ) ? absint( $_GET['post'] ) : absint( $_POST['post'] ) ;
 	$post = get_post($id);
 
 	// Copy the post and insert it
@@ -173,10 +173,10 @@ function duplicate_post_save_as_new_post($status = ''){
 
 		if ($status == ''){
 			// Redirect to the post list screen
-			wp_redirect( admin_url( 'edit.php?post_type='.$post->post_type) );
+			wp_safe_redirect( admin_url( 'edit.php?post_type='.$post->post_type) );
 		} else {
 			// Redirect to the edit screen for the new draft post
-			wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_id ) );
+			wp_safe_redirect( admin_url( 'post.php?action=edit&post=' . $new_id ) );
 		}
 		exit;
 
@@ -196,11 +196,6 @@ function duplicate_post_get_current_user() {
 		global $userdata;
 		get_currentuserinfo();
 		return $userdata;
-	} else {
-		$user_login = $_COOKIE[USER_COOKIE];
-		$sql = $wpdb->prepare("SELECT * FROM $wpdb->users WHERE user_login=%s", $user_login);
-		$current_user = $wpdb->get_results($sql);			
-		return $current_user;
 	}
 }
 
@@ -346,8 +341,8 @@ add_filter('plugin_row_meta', 'duplicate_post_add_plugin_links', 10, 2);
 
 function duplicate_post_add_plugin_links($links, $file) {
 	if ( $file == plugin_basename(dirname(__FILE__).'/duplicate-post.php') ) {
-		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . __('Donate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
-		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . __('Translate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . esc_attr__('Donate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . esc_attr__('Translate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
 	}
 	return $links;
 }

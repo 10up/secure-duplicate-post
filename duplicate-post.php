@@ -1,10 +1,10 @@
 <?php
 /*
- Plugin Name: Duplicate Post
+ Plugin Name: Secure Duplicate Post
  Plugin URI: http://lopo.it/duplicate-post-plugin/
  Description: Clone posts and pages.
  Version: 2.6
- Author: Enrico Battocchi
+ Author: Enrico Battocchi secured by 10up
  Author URI: http://lopo.it
  Text Domain: duplicate-post
  */
@@ -41,7 +41,7 @@ load_plugin_textdomain(DUPLICATE_POST_I18N_DOMAIN,
 add_filter("plugin_action_links_".plugin_basename(__FILE__), "duplicate_post_plugin_actions", 10, 4);
 
 function duplicate_post_plugin_actions( $actions, $plugin_file, $plugin_data, $context ) {
-	array_unshift($actions, "<a href=\"".menu_page_url('duplicatepost', false)."\">".__("Settings")."</a>");
+	array_unshift($actions, "<a href=\"".menu_page_url('duplicatepost', false)."\">".esc_attr__("Settings")."</a>");
 	return $actions;
 }
 
