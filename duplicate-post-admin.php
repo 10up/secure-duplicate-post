@@ -109,15 +109,16 @@ if (get_option('duplicate_post_show_row') == 1){
 /**
  * Add the link to action list for post_row_actions
  */
-function duplicate_post_make_duplicate_link_row($actions, $post) {
-	if (duplicate_post_is_current_user_allowed_to_copy()) {
-		$actions['clone'] = '<a href="'.duplicate_post_get_clone_post_link( $post->ID , 'display', false).'" title="'
-		. esc_attr(__("Clone this item", DUPLICATE_POST_I18N_DOMAIN))
-		. '">' .  esc_attr__('Clone', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
-		$actions['edit_as_new_draft'] = '<a href="'. duplicate_post_get_clone_post_link( $post->ID ) .'" title="'
-		. esc_attr(__('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN))
-		. '">' .  esc_attr__('New Draft', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+function duplicate_post_make_duplicate_link_row( $actions, $post ) {
+	if ( duplicate_post_is_current_user_allowed_to_copy() ) {
+		$actions['clone']             = '<a href="' . esc_url( duplicate_post_get_clone_post_link( $post->ID, 'display', false ) ) . '" title="'
+		                                . esc_attr__( "Clone this item", DUPLICATE_POST_I18N_DOMAIN )
+		                                . '">' . esc_html__( 'Clone', DUPLICATE_POST_I18N_DOMAIN ) . '</a>';
+		$actions['edit_as_new_draft'] = '<a href="' . esc_url( duplicate_post_get_clone_post_link( $post->ID ) ) . '" title="'
+		                                . esc_attr__( 'Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN )
+		                                . '">' . esc_html__( 'New Draft', DUPLICATE_POST_I18N_DOMAIN ) . '</a>';
 	}
+
 	return $actions;
 }
 
@@ -133,7 +134,7 @@ function duplicate_post_add_duplicate_post_button() {
 		?>
 <div id="duplicate-action">
 	<a class="submitduplicate duplication"
-		href="<?php echo duplicate_post_get_clone_post_link( absint( $_GET['post'] ) )  ?>"><?php esc_attr_e('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN); ?>
+		href="<?php echo esc_url( duplicate_post_get_clone_post_link( absint( $_GET['post'] ) ) ) ?>"><?php esc_html_e('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN); ?>
 	</a>
 </div>
 		<?php
@@ -182,7 +183,7 @@ function duplicate_post_save_as_new_post($status = ''){
 
 	} else {
 		$post_type_obj = get_post_type_object( $post->post_type );
-		wp_die(esc_attr(__('Copy creation failed, could not find original:', DUPLICATE_POST_I18N_DOMAIN)) . ' ' . htmlspecialchars($id));
+		wp_die(esc_html__('Copy creation failed, could not find original:', DUPLICATE_POST_I18N_DOMAIN) . ' ' . htmlspecialchars($id));
 	}
 }
 
@@ -341,8 +342,8 @@ add_filter('plugin_row_meta', 'duplicate_post_add_plugin_links', 10, 2);
 
 function duplicate_post_add_plugin_links($links, $file) {
 	if ( $file == plugin_basename(dirname(__FILE__).'/duplicate-post.php') ) {
-		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . esc_attr__('Donate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
-		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . esc_attr__('Translate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . esc_html__('Donate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
+		$links[] = '<a href="http://lopo.it/duplicate-post-plugin">' . esc_html__('Translate', DUPLICATE_POST_I18N_DOMAIN) . '</a>';
 	}
 	return $links;
 }

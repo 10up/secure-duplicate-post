@@ -63,11 +63,11 @@ function duplicate_post_clone_post_link( $link = null, $before = '', $after = ''
 	return;
 
 	if ( null === $link )
-	$link = esc_attr__('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN);
+	$link = esc_html__('Copy to a new draft', DUPLICATE_POST_I18N_DOMAIN);
 
 	$post_type_obj = get_post_type_object( $post->post_type );
-	$link = '<a class="post-clone-link" href="' . $url . '" title="'
-	. esc_attr(__("Copy to a new draft", DUPLICATE_POST_I18N_DOMAIN))
+	$link = '<a class="post-clone-link" href="' . esc_url( $url  ). '" title="'
+	. esc_attr__("Copy to a new draft", DUPLICATE_POST_I18N_DOMAIN)
 	.'">' . $link . '</a>';
 	echo $before . apply_filters( 'duplicate_post_clone_post_link', $link, $post->ID ) . $after;
 }
@@ -100,7 +100,7 @@ function duplicate_post_admin_bar_render() {
 		$wp_admin_bar->add_menu( array(
 		'parent' => 'edit',
         'id' => 'new_draft',
-        'title' => esc_attr__("Copy to a new draft", DUPLICATE_POST_I18N_DOMAIN),
+        'title' => __("Copy to a new draft", DUPLICATE_POST_I18N_DOMAIN),
         'href' => duplicate_post_get_clone_post_link( $current_object->ID )
 		) );
 	}
